@@ -16,7 +16,7 @@ channel.queue_declare(queue='hello')
 
 class HelloWorld(Resource):
     def get(self):
-        return "Please post data in the form {\"input\":\"<data>\""
+        return "Please post data in the form {'input':'<data>'}"
     def post(self):
         args = parser.parse_args()
         bodyText = str(args['input'])
