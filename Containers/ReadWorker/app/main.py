@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import Resource, Api, reqparse
 import pika
 import os.path
+import socket
 
 app = Flask(__name__)
 api = Api(app)
@@ -9,9 +10,7 @@ api = Api(app)
 parser = reqparse.RequestParser()
 parser.add_argument('input')
 
-host = str(open('config.txt', 'r').read())
-
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='10.82.53.62'))
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='dockermachine'))
 channel = connection.channel()
 
 channel.queue_declare(queue='inputQueue')
@@ -25,7 +24,7 @@ class ReadWorker(Resource):
         channel.basic_publish(exchange='',
                               routing_key='inputQueue',
                               body=bodyText)
-        return {'Status':'Uploaded', 'InputData': bodyText, 'ConfigExists':str(os.path.exists("config.txt")), 'ConfigData': host}, 201
+        return {'Status':'Uploaded', 'InputData': bodyText}, 201
 
 api.add_resource(ReadWorker, '/')
 
