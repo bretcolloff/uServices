@@ -1,5 +1,5 @@
 param(
-  [String]$machine="rabbitmq",
+  [String]$machine="rabbitmq"
   [String]$reader="ureadworker"
 )
 
