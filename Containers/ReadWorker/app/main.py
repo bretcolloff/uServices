@@ -3,12 +3,14 @@ from flask_restful import Resource, Api, reqparse
 import pika
 import os.path
 import socket
+import json
 
 app = Flask(__name__)
 api = Api(app)
 
 parser = reqparse.RequestParser()
-parser.add_argument('input')
+parser.add_argument('text')
+parser.add_argument('title')
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='dockermachine'))
 channel = connection.channel()
@@ -20,11 +22,16 @@ class ReadWorker(Resource):
         return "Please post data in the form {'input':'<data>'}"
     def post(self):
         args = parser.parse_args()
-        bodyText = str(args['input'])
+        text = str(args['text'])
+        title = str(args['title'])
+
+        message = {}
+        message["title"] = title
+        message["text"] = text
         channel.basic_publish(exchange='',
                               routing_key='inputQueue',
-                              body=bodyText)
-        return {'Status':'Uploaded', 'InputData': bodyText}, 201
+                              body=json.dumps(message))
+        return {'Status':'Uploaded', 'InputData': json.dumps(message)}, 201
 
 api.add_resource(ReadWorker, '/')
 
