@@ -1,14 +1,42 @@
-from flask import Flask
-from flask_restful import Resource, Api
+#!/usr/bin/env python
+import pika
+from itertools import zip_longest
+import json
 
-app = Flask(__name__)
-api = Api(app)
+inputconnection = pika.BlockingConnection(pika.ConnectionParameters(host='dockermachine'))
+outputconnection = pika.BlockingConnection(pika.ConnectionParameters(host='dockermachine'))
+input = inputconnection.channel()
+output = outputconnection.channel()
 
-class ProcessWorker(Resource):
-    def get(self):
-        return {'get': 'test'}
+print("starting")
+input.queue_declare(queue='pageQueue')
+output.queue_declare(queue='wordQueue')
 
-api.add_resource(ProcessWorker, '/')
+def callback(ch, method, properties, body):
+    # Body will be json, contains: text, title, number
+    message = body.decode('UTF-8')
+    parsedMessage = json.loads(message)
 
-if __name__ == "__main__":
-   app.run(host='0.0.0.0', debug=True, port=80)
+    title = parsedMessage["title"]
+    pageNumber = parsedMessage["number"]
+    words = parsedMessage["text"].split(" ")
+
+    # The first word on the page should be =
+    # ((pagenumber - 1)* page size) + 1
+    wordIndex = ((pageNumber - 1) * 325) + 1
+
+    for word in words:
+        wordMessage = {}
+        wordMessage["title"] = title
+        wordMessage["pageNumber"] = pageNumber
+        wordMessage["word"] = word
+        wordMessage["wordIndex"] = wordIndex
+        print(wordMessage)
+        output.basic_publish(exchange='', routing_key='wordQueue', body=json.dumps(wordMessage))
+        wordIndex +=1
+
+input.basic_consume(callback,
+                      queue='pageQueue',
+                      no_ack=True)
+
+input.start_consuming()
