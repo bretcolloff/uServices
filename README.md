@@ -53,3 +53,11 @@ When you've finished, you can use this script:
 .\Scripts\StopAll.ps1
 ```
 This will safely stop and remove all containers, then stop and remove all Docker machines.
+
+## Additional
+There is a template container for a flaskRESTful service in:
+
+```
+.\Containers\Flask_Template
+```
+This is a tested minimal container with a flaskRESTful service and a simple GET endpoint. It's provided as a starting point for creating your own.
