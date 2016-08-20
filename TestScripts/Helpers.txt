@@ -1,9 +1,0 @@
-// Remove all machines.
-docker-machine rm -f $(docker-machine ls -q)
-
-// Remove all containers.
-docker stop $(docker ps -a -q)
-docker rm $(docker ps -a -q)
-
-// Build a container
-docker build -t <name> .
