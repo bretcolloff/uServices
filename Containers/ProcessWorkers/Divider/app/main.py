@@ -8,7 +8,6 @@ outputconnection = pika.BlockingConnection(pika.ConnectionParameters(host='docke
 input = inputconnection.channel()
 output = outputconnection.channel()
 
-print("starting")
 input.queue_declare(queue='inputQueue')
 output.queue_declare(queue='pageQueue')
 

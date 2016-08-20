@@ -19,5 +19,5 @@ for($i=0; $i -lt $amount; $i++)
   $portMap = [String]$newPort + ":80"
 
   # Run the specified container.
-  docker run -d -p $portMap --add-host dockermachine:$machineAddress $reader
+  docker run -d -p $portMap --add-host dockermachine:$machineAddress $container
 }

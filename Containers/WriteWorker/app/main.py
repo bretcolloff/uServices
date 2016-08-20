@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 from elasticsearch import Elasticsearch
-from itertools import zip_longest
 import json
 import pika
 import uuid
 
 # Connect to ElasticSearch.
-es = Elasticsearch([{'host': 'dockermachine, 'port': 9200}])
+es = Elasticsearch([{'host': 'dockermachine', 'port': 9200}])
 
 # Connect to RabbitMq.
 inputconnection = pika.BlockingConnection(pika.ConnectionParameters(host='dockermachine'))

@@ -52,7 +52,7 @@ docker build -t $writer .
 
 Write-Host "Containers built, running..."
 
-cd ..\..\TestScripts
+cd ..\..\Scripts
 
 Write-Host "Run the reader container..."
 .\RunContainers.ps1 -machine $machineName -container $reader -port 80

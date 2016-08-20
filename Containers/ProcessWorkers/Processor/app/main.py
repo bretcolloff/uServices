@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import pika
-from itertools import zip_longest
 import json
 
 inputconnection = pika.BlockingConnection(pika.ConnectionParameters(host='dockermachine'))
@@ -8,7 +7,6 @@ outputconnection = pika.BlockingConnection(pika.ConnectionParameters(host='docke
 input = inputconnection.channel()
 output = outputconnection.channel()
 
-print("starting")
 input.queue_declare(queue='pageQueue')
 output.queue_declare(queue='wordQueue')
 
@@ -31,7 +29,6 @@ def callback(ch, method, properties, body):
         wordMessage["pageNumber"] = pageNumber
         wordMessage["word"] = word
         wordMessage["wordIndex"] = wordIndex
-        print(wordMessage)
         output.basic_publish(exchange='', routing_key='wordQueue', body=json.dumps(wordMessage))
         wordIndex +=1
 

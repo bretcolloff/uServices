@@ -1,4 +1,4 @@
-FROM tiangolo/uwsgi-nginx:latest
+FROM tiangolo/uwsgi-nginx:python3.5
 
 MAINTAINER Bret Colloff <bret.colloff@gmail.com>
 
