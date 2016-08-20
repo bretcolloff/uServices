@@ -9,7 +9,7 @@ param(
   [Int32]$writerCount=1
 )
 
-Write-Host "Starting docker machine " + $machine + "..."
+Write-Host "Starting docker machine $machine ..."
 
 # Start the docker machine.
 $machineName = $machine
@@ -20,7 +20,7 @@ docker-machine env $machineName | Invoke-Expression
 # Store the machine address.
 $machineAddress = docker-machine ip $machineName
 
-Write-Host "Docker machine started at " + $machineAddress
+Write-Host "Docker machine started at $machineAddress"
 Write-Host "Starting RabbitMq..."
 
 # Run rabbitmq
