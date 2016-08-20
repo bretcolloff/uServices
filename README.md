@@ -1,5 +1,5 @@
 # uServices
-Storage for a container based microservices experiment.
+Storage for a container based microservices experiment using Docker Toolbox and PowerShell.
 
 ## Overview
 This was an experimental project with the goal of developing a set of microservices as a learning experiment. It needed to take some input, do a few stages of processing and then post the results into ElasticSearch where some analytics could be done in Kibana.
@@ -21,7 +21,8 @@ There are several services involved:
 * Kibana - Visualises ElasticSearch.
 
 ## How to use it
-There are 2 main scripts to run from PowerShell.
+To run this as is, you'll need to have Docker installed, and PowerShell.
+There are 2 main scripts to run from PowerShell:
 
 ```
 .\Scripts\Run.ps1
